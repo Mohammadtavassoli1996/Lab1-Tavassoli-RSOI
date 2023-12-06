@@ -48,8 +48,20 @@ jobs:
       - name: Build Docker image
         run: docker build -t my-docker-image .
 
+      - name: Run Docker container and capture container ID
+        run: |
+          CONTAINER_ID=$(docker run --rm -d -p 3000:3000 my-docker-image)
+          echo "Container ID: $CONTAINER_ID"
+          echo "::set-output name=CONTAINER_ID::$CONTAINER_ID"
+
+      - name: Display Docker containers
+        run: docker ps
+
       - name: Run Docker container
         run: docker run --rm -p 3000:3000 my-docker-image
+
+      - name: Display Docker logs
+        run: docker logs $CONTAINER_ID
 
       - name: Run Tests
         run: npm test      
