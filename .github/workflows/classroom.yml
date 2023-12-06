@@ -61,7 +61,7 @@ jobs:
         run: docker run --rm -p 3000:3000 my-docker-image
 
       - name: Delay Before Running Newman
-        run: sleep 30s
+        run: sleep 60s
 
       - name: Display Docker logs
         run: docker logs $CONTAINER_ID
