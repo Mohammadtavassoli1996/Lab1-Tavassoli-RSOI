@@ -11,6 +11,49 @@ on:
       - master
 
 jobs:
+
+  Autograding:
+    name: Autograding
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'  
+
+      - name: Install dependencies
+        run: npm install    
+
+
+
+      - name: Run API Tests
+        uses: matt-ball/newman-action@master
+        with:
+          collection: postman/[inst] Lab1.postman_collection.json
+          environment: postman/[inst][local] Lab1.postman_environment.json
+          delayRequest: 10000
+          reporters: '[ "cli" ]'
+
+
+      - name: Autograding
+        uses: education/autograding@v1
+        continue-on-error: true
+
+      - name: Github auto grader mark
+        uses: Romanow/google-sheet-autograder-marker@v1.0
+        with:
+          google_token: ${{secrets.GOOGLE_API_KEY}}
+          sheet_id: "1xkgjUX6Qmk7rdJG-QPOToav-HWWtthJjnShIKnw3oIY"
+          homework_number: 1
+          user_column: 'D'
+          column_offset: 'F'
+          mark: "'+"
+
   build:
     name: Build and Test
     runs-on: ubuntu-latest
@@ -57,44 +100,3 @@ jobs:
 
 
 
-  Autograding:
-    name: Autograding
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'  
-
-      - name: Install dependencies
-        run: npm install    
-
-
-
-      - name: Run API Tests
-        uses: matt-ball/newman-action@master
-        with:
-          collection: postman/[inst] Lab1.postman_collection.json
-          environment: postman/[inst][local] Lab1.postman_environment.json
-          delayRequest: 10000
-          reporters: '[ "cli" ]'
-
-
-      - name: Autograding
-        uses: education/autograding@v1
-        continue-on-error: true
-
-      - name: Github auto grader mark
-        uses: Romanow/google-sheet-autograder-marker@v1.0
-        with:
-          google_token: ${{secrets.GOOGLE_API_KEY}}
-          sheet_id: "1xkgjUX6Qmk7rdJG-QPOToav-HWWtthJjnShIKnw3oIY"
-          homework_number: 1
-          user_column: 'D'
-          column_offset: 'F'
-          mark: "'+"
