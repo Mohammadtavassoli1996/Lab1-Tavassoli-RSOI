@@ -1,29 +1,89 @@
 name: GitHub Classroom Workflow
+
+
 on:
   push:
     branches:
       - master
+
   pull_request:
     branches:
       - master
+
 jobs:
   build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+
+
+    services:
+      postgres:
+        image: postgres:latest  
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: persons_db  
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+
+
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14' 
+
+      - name: Install dependencies
+        run: npm install 
+
+      - name: Build Docker image
+        run: docker build -t my-docker-image .
+
+      - name: Run Docker container
+        run: docker run --rm -p 3000:3000 my-docker-image
+
+      - name: Run Tests
+        run: npm test      
+
+
+
+
+  Autograding:
     name: Autograding
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      # TODO build, test and deploy project
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'  
+
+      - name: Install dependencies
+        run: npm install    
+
+
 
       - name: Run API Tests
         uses: matt-ball/newman-action@master
         with:
           collection: postman/[inst] Lab1.postman_collection.json
-          environment: postman/[inst][heroku] Lab1.postman_environment.json
+          environment: postman/[inst][local] Lab1.postman_environment.json
           delayRequest: 100
           reporters: '[ "cli" ]'
+
 
       - name: Autograding
         uses: education/autograding@v1
