@@ -12,11 +12,8 @@ on:
 
 jobs:
   build:
-    name: Build and Test
+    name: Autograding
     runs-on: ubuntu-latest
-
-
-
     services:
       postgres:
         image: postgres:latest  
@@ -29,11 +26,8 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
 
-
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -68,25 +62,7 @@ jobs:
 
       - name: Run Tests
         run: npm test      
-
-
-
-  Autograding:
-    name: Autograding
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'  
-
-      - name: Install dependencies
-        run: npm install    
+    
 
 
 
