@@ -46,16 +46,13 @@ jobs:
         run: |
           CONTAINER_ID=$(docker run --rm -p 3000:3000 my-docker-image)
           echo "Container ID: $CONTAINER_ID"
+          docker ps -a
+          docker logs $CONTAINER_ID
           echo "::set-output name=CONTAINER_ID::$CONTAINER_ID"
-
-      - name: Display Docker containers
-        run: docker ps
+          
 
       - name: Delay Before Running Newman
         run: sleep 60s
-
-      - name: Display Docker logs
-        run: docker logs $CONTAINER_ID
 
       - name: Run Tests
         run: npm test      
