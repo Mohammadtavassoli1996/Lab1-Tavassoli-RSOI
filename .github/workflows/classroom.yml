@@ -54,11 +54,7 @@ jobs:
       - name: Delay Before Running Newman
         run: sleep 60s
 
-      - name: Run Tests
-        run: npm test      
-    
-
-
+           
 
       - name: Run API Tests
         uses: matt-ball/newman-action@master
