@@ -87,7 +87,8 @@ app.patch('/api/v1/persons/:id', (req, res) => {
     }
   
     const deletedPerson = persons.splice(index, 1)[0];
-    res.json(deletedPerson);
+    res.status(204).send();
+    // res.json(deletedPerson);
   });
   
 
