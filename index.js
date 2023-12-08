@@ -85,10 +85,7 @@ app.patch('/api/v1/persons/:id', (req, res) => {
     if (age !== undefined) {
       persons[index].age = age;
     }
-
-    // persons[index] = { ...persons[index], name, address, work, age };
-
-
+    
     res.json(persons[index]);
   });
 

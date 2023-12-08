@@ -51,8 +51,7 @@ jobs:
           echo "::set-output name=CONTAINER_ID::$CONTAINER_ID"
           
 
-      - name: Delay Before Running Newman
-        run: sleep 60s
+      
 
            
 
