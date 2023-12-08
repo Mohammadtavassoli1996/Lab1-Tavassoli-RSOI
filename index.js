@@ -69,7 +69,26 @@ app.patch('/api/v1/persons/:id', (req, res) => {
       return res.status(404).json({ error: 'Person not found' });
     }
   
-    persons[index] = { ...persons[index], name, address, work, age };
+
+    if (name !== undefined) {
+      persons[index].name = name;
+    }
+  
+    if (address !== undefined) {
+      persons[index].address = address;
+    }
+  
+    if (work !== undefined) {
+      persons[index].work = work;
+    }
+  
+    if (age !== undefined) {
+      persons[index].age = age;
+    }
+
+    // persons[index] = { ...persons[index], name, address, work, age };
+
+
     res.json(persons[index]);
   });
 
@@ -88,7 +107,6 @@ app.patch('/api/v1/persons/:id', (req, res) => {
   
     const deletedPerson = persons.splice(index, 1)[0];
     res.status(204).send();
-    // res.json(deletedPerson);
   });
   
 
